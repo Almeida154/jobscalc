@@ -200,7 +200,7 @@ main {
 
   font-family: Inter;
   font-weight: 600;
-  font-size: 0.75rem; /* 12px of 16px root*/
+  font-size: 0.75rem; /* 12px of 16px root */
   text-transform: uppercase;
 
   color: var(--color-card-label);
