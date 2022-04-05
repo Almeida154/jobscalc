@@ -32,11 +32,13 @@
           <img id="logo" src="./img/logo.svg" alt="Logo" />
           <span id="notification">
             <img src="./img/alert-octagon.svg" alt="Alerta" />
-            Você tem 2 horas livres no seu dia
+
+            <% if (freeHours > 0) { %> Você tem <%= freeHours %> horas livres no
+            seu dia <% } else { %> Você não tem horas livres <% } %>
           </span>
           <a href="/profile" id="avatar-profile">
-            <p>Jakeliny <span>Ver perfil</span></p>
-            <img src="https://github.com/Almeida154.png" />
+            <p><%= profile.name %> <span>Ver perfil</span></p>
+            <img src="<%= profile.avatar %> " />
           </a>
         </section>
 
@@ -47,15 +49,15 @@
 
           <div class="info">
             <div class="total">
-              <strong>12</strong>
+              <strong><%= stats.total %> </strong>
               Projetos ao total
             </div>
             <div class="in-progress">
-              <strong>7</strong>
+              <strong><%= stats.progress %> </strong>
               Em andamento
             </div>
             <div class="finished">
-              <strong>4</strong>
+              <strong><%= stats.done %> </strong>
               Encerrados
             </div>
           </div>
