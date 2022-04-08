@@ -3,12 +3,8 @@ const Job = require('../models/Job');
 const JobUtils = require('../utils/JobUtils');
 
 module.exports = {
-  save(req, res) {
-    const jobs = Job.get();
-    const lastId = jobs[jobs.length - 1]?.id || 0;
-
-    jobs.push({
-      id: lastId + 1, // jobs.length
+  async save(req, res) {
+    await Job.create({
       name: req.body.name,
       dailyHours: req.body['daily-hours'],
       totalHours: req.body['total-hours'],
@@ -22,23 +18,25 @@ module.exports = {
     return res.render('job');
   },
 
-  show(req, res) {
-    const jobs = Job.get();
+  async show(req, res) {
+    const jobs = await Job.get();
+    const { hourValue } = await Profile.get();
+
     const jobId = req.params.id;
     const job = jobs.find((job) => Number(job.id) === Number(jobId));
 
     if (!job) return res.send('Job not found!');
 
-    job.budget = JobUtils.calculateBudget(job, Profile.get().hourValue);
+    job.budget = JobUtils.calculateBudget(job, hourValue);
 
     return res.render('job-edit', { job });
   },
 
-  update(req, res) {
-    const jobs = Job.get();
+  async update(req, res) {
+    const jobs = await Job.get();
     const jobId = req.params.id;
-    const job = jobs.find((job) => Number(job.id) === Number(jobId));
 
+    const job = jobs.find((job) => Number(job.id) === Number(jobId));
     if (!job) return res.send('Job not found!');
 
     const updatedJob = {
@@ -48,16 +46,16 @@ module.exports = {
       totalHours: req.body['total-hours'],
     };
 
-    Job.update(updatedJob, jobId);
+    await Job.update(updatedJob, jobId);
     res.redirect(`/job/${jobId}`);
   },
 
-  delete(req, res) {
-    const jobs = Job.get();
+  async delete(req, res) {
+    const jobs = await Job.get();
     const job = jobs.find((job) => Number(job.id) === Number(req.params.id));
     if (!job) return res.send('Job not found!');
 
-    Job.delete(req.params.id);
+    await Job.delete(req.params.id);
     res.redirect('/');
   },
 };
