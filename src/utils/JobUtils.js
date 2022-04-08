@@ -5,7 +5,7 @@ module.exports = {
     const dueDay = createdDate.getDate() + Number(totalDays);
     const dueDate = createdDate.setDate(dueDay);
     const remainingDaysInMS = dueDate - Date.now();
-    const remainingDays = Math.floor(remainingDaysInMS / (1000 * 60 * 60 * 24));
+    const remainingDays = Math.ceil(remainingDaysInMS / (1000 * 60 * 60 * 24));
     return remainingDays;
   },
   calculateBudget: (job, hourValue) => hourValue * job.totalHours,
